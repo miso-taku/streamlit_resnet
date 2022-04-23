@@ -7,7 +7,7 @@ from model import predict
 st.set_option("deprecation.showfileUploaderEncoding", False)
 
 st.sidebar.title("画像認識アプリ")
-st.sidebar.write("CIFAR10ベース")
+st.sidebar.write("ResNetベース")
 
 st.sidebar.write("")
 
@@ -22,14 +22,14 @@ if img_file is not None:
         results = predict(img)
 
         st.subheader("判定結果")
-        n_top = 3
+        n_top = 5
         for result in results[:n_top]:
-            st.write(str(round(result[2]*100, 2)) + "%の確率で" + result[0] + "です。")
+            st.write(str(round(result[1]*100, 2)) + "%の確率で" + result[0] + "です。")
 
-        pie_labels = [result[1] for result in results[:n_top]]
+        pie_labels = [result[0] for result in results[:n_top]]
         pie_labels.append("others")
-        pie_probs =  [result[2] for result in results[:n_top]]
-        pie_probs.append(sum([result[2] for result in results[n_top:]]))
+        pie_probs =  [result[1] for result in results[:n_top]]
+        pie_probs.append(sum([result[1] for result in results[n_top:]]))
         fig, ax = plt.subplots()
         wedgeprops = {"width":0.3, "edgecolor":"white"}
         textprops = {"fontsize":6}
