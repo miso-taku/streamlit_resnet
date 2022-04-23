@@ -22,7 +22,7 @@ if img_file is not None:
         results = predict(img)
 
         st.subheader("判定結果")
-        n_top = 5
+        n_top = 3
         for result in results[:n_top]:
             st.write(str(round(result[1]*100, 2)) + "%の確率で" + result[0] + "です。")
 

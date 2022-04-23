@@ -7,35 +7,19 @@ with open("imagenet_classes.txt") as f:  # ラベルの読み込み
     classes = [line.strip() for line in f.readlines()]
 
 def predict(img):
-    transform = transforms.Compose([
-                                    transforms.Resize(256),
-                                    transforms.CenterCrop(224),
-                                    transforms.ToTensor(),
-                                    transforms.Normalize(
-                                        mean=[0.485, 0.456, 0.406],
-                                        std=[0.229, 0.224, 0.225]
-                                        )
-                                    ])
+    preprocess = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
 
-    # モデルへの入力
-    img = transform(img)
-    x = torch.unsqueeze(img, 0)  # バッチ対応
-    # preprocess = transforms.Compose([
-    #     transforms.Resize(256),
-    #     transforms.CenterCrop(224),
-    #     transforms.ToTensor(),
-    #     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
-    # ])
+    input_tensor = preprocess(img)
+    x = torch.unsqueeze(input_tensor, 0)
 
-    # input_tensor = preprocess(img)
-    # input_batch = input_tensor.unsqueeze(0) # create a mini-batch as expected by the model
-
-
-    # 予測
     net.eval()
     y = net(x)
 
-    # 結果を返す
-    y_prob = torch.nn.functional.softmax(torch.squeeze(y))  # 確率で表す
-    sorted_prob, sorted_indices = torch.sort(y_prob, descending=True)  # 降順にソート
+    y_prob = torch.nn.functional.softmax(torch.squeeze(y))
+    sorted_prob, sorted_indices = torch.sort(y_prob, descending=True) 
     return [(classes[idx], prob.item()) for idx, prob in zip(sorted_indices, sorted_prob)]
