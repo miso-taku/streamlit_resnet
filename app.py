@@ -8,12 +8,12 @@ import plotly.graph_objects as go
 
 st.set_option("deprecation.showfileUploaderEncoding", False)
 
-st.sidebar.title("画像認識アプリ")
-st.sidebar.write("ResNetベース")
+st.title("画像認識アプリ")
+st.write("ResNetベース")
 
-st.sidebar.write("")
+st.write("")
 
-img_file = st.sidebar.file_uploader("画像を選択", type=["png", "jpg"])
+img_file = st.file_uploader("画像を選択", type=["png", "jpg"])
 
 if img_file is not None:
     with st.spinner("判定中"):
