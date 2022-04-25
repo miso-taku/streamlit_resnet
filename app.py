@@ -8,7 +8,7 @@ import plotly.graph_objects as go
 
 st.set_option("deprecation.showfileUploaderEncoding", False)
 
-st.title("画像認識アプリ")
+st.title("画像分類アプリ")
 st.write("ResNetベース")
 
 st.write("")
